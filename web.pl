@@ -28,7 +28,7 @@ $cache->set(poll =>
                         },
                     });
 
-get '/' => {text => 'I ♥ Mojolicious!'};
+get '/' => {template => 'root'};
 
 get '/form' => {template => 'form'};
 get '/vote' => sub {
@@ -83,7 +83,7 @@ get '/poll' => sub {
         $chart->set_3hig_sizes($poll->{$topic}->{3});
         $chart->set_4sup_sizes($poll->{$topic}->{4});
 
-        $chart->render_chart($topic . '.png');
+        $chart->render_chart('public/' . $topic . '.png');
     }
 
 } => 'poll';
@@ -91,6 +91,17 @@ get '/poll' => sub {
 app->start;
 
 __DATA__
+
+@@ root.html.ep
+<!DOCTYPE html>
+<html lang="de"><head><meta charset="utf-8"><title>Gibbmers</title></head>
+<body>
+<h1>GIBBmers - Unterrichtsauswertung</h1>
+<ul>
+<li><a href="/form">Fragebogen</li>
+<li><a href="/poll">Auswertung</li>
+</body>
+</html>
 
 @@ vote.html.ep
 <!DOCTYPE html>
@@ -104,7 +115,11 @@ __DATA__
 <!DOCTYPE html>
 <html lang="de"><head><meta charset="utf-8"><title>Gibbmers</title></head>
 <body>
- <img src="kid.png" alt="Smiley face"> 
+ <h1>Auswertung</h1>
+ <img src="kid.png" alt="Selbsteinschätzung"> 
+ <img src="class.png" alt="Klassenklima"><br />
+ <img src="sheets.png" alt="Modulunterlagen"> 
+ <img src="teacher.png" alt="Lehrperson"> 
 </body>
 </html>
 
