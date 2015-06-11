@@ -1,4 +1,26 @@
 use Mojolicious::Lite;
+use Mojo::Cache;
+
+my $cache = Mojo::Cache->new(max_keys => 30);
+
+                      # interest   # topic      # bad # soso # good # super
+$cache->set(poll =>
+                    {   1 =>       { kid     => [ 0,    0,     0,     0 ],
+                                     sheets  => [ 0,    0,     0,     0 ],
+                                     class   => [ 0,    0,     0,     0 ],
+                                     teacher => [ 0,    0,     0,     0 ],
+                                   },
+                        2 =>       { kid     => [ 0,    0,     0,     0 ],
+                                     sheets  => [ 0,    0,     0,     0 ],
+                                     class   => [ 0,    0,     0,     0 ],
+                                     teacher => [ 0,    0,     0,     0 ],
+                                   },
+                        3 =>       { kid     => [ 0,    0,     0,     0 ],
+                                     sheets  => [ 0,    0,     0,     0 ],
+                                     class   => [ 0,    0,     0,     0 ],
+                                     teacher => [ 0,    0,     0,     0 ],
+                                   },
+                    });
 
 get '/' => {text => 'I ♥ Mojolicious!'};
 
@@ -6,9 +28,38 @@ get '/form' => {template => 'form'};
 get '/vote' => sub {
 
     my $self = shift;
+
+    my $client_ip = $self->tx->remote_address;
+
+    if ($cache->get($client_ip)) {
+        $self->stash( message => "Sie haben bereits teilgenommen!" );
+        $self->render;
+        # EXIT and render
+    }
+
+    $cache->set($client_ip => 1);
+
+    my $interest = $self->param('interest');
+    my $kid      = $self->param('kid');
+    my $sheets   = $self->param('sheets');
+    my $class    = $self->param('class');
+    my $teacher  = $self->param('teacher');
+
+    my $poll = $cache->get('poll');
+
+    $poll->{$interest}->{kid}[$kid]++;
+    $poll->{$interest}->{sheets}[$sheets]++;
+    $poll->{$interest}->{class}[$class]++;
+    $poll->{$interest}->{teacher}[$teacher]++;
+
+#    use Data::Dumper;
+#    print Dumper($poll);
+
+    $cache->set('poll' => $poll);
+
     $self->stash( message => "Danke für die Teilnahme!" );
         
-} => 'vote';
+} => 'vote'; # template call
 
 app->start;
 
@@ -45,10 +96,10 @@ Wie stark haben Sie an dem Fach ein <b>persönliches</b> Interesse
 Wie gross ist Ihr Einsatz für das Fach (Aufmerksamkeit im Unterricht und bei Aufgaben, Arbeiten ausserhalb der Schule)?
 </p>
 <p>
- <input type="radio" name="sheets" value="1">schlecht
- <input type="radio" name="sheets" value="2">naja
- <input type="radio" name="sheets" value="3">gut
- <input type="radio" name="sheets" value="4">super
+ <input type="radio" name="kid" value="1">schlecht
+ <input type="radio" name="kid" value="2">naja
+ <input type="radio" name="kid" value="3">gut
+ <input type="radio" name="kid" value="4">super
 </p>
 
 <h2>Frage 3</h2>
