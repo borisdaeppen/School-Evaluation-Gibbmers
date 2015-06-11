@@ -43,6 +43,7 @@ sub set_4sup_sizes {
 
 sub render_chart {
     my $self = shift;
+    my $filename = shift;
 
     my $cc = Chart::Clicker->new(   width  => 400,
                                     height => 300,
@@ -100,7 +101,7 @@ sub render_chart {
     $cnf->domain_axis->tick_labels(['wenig Interesse', 'Interessant', 'Lieblingsfach']);
     $cnf->renderer(Chart::Clicker::Renderer::Bubble->new);
     
-    $cc->write_output('bubble.png');
+    $cc->write_output($filename);
 }
 
 1;

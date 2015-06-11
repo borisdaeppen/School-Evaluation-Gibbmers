@@ -1,25 +1,31 @@
 use Mojolicious::Lite;
 use Mojo::Cache;
+use School::Evaluation::Gibbmers::Chart;
 
 my $cache = Mojo::Cache->new(max_keys => 30);
 
-                      # interest   # topic      # bad # soso # good # super
+                      # topic     # value      # interests
 $cache->set(poll =>
-                    {   1 =>       { kid     => [ 0,    0,     0,     0 ],
-                                     sheets  => [ 0,    0,     0,     0 ],
-                                     class   => [ 0,    0,     0,     0 ],
-                                     teacher => [ 0,    0,     0,     0 ],
-                                   },
-                        2 =>       { kid     => [ 0,    0,     0,     0 ],
-                                     sheets  => [ 0,    0,     0,     0 ],
-                                     class   => [ 0,    0,     0,     0 ],
-                                     teacher => [ 0,    0,     0,     0 ],
-                                   },
-                        3 =>       { kid     => [ 0,    0,     0,     0 ],
-                                     sheets  => [ 0,    0,     0,     0 ],
-                                     class   => [ 0,    0,     0,     0 ],
-                                     teacher => [ 0,    0,     0,     0 ],
-                                   },
+                    {   kid    =>    { 1    => [ 0,    0,     0 ],
+                                       2    => [ 0,    0,     0 ],
+                                       3    => [ 0,    0,     0 ],
+                                       4    => [ 0,    0,     0 ],
+                        },
+                        sheets =>    { 1    => [ 0,    0,     0 ],
+                                       2    => [ 0,    0,     0 ],
+                                       3    => [ 0,    0,     0 ],
+                                       4    => [ 0,    0,     0 ],
+                        },
+                        class  =>    { 1    => [ 0,    0,     0 ],
+                                       2    => [ 0,    0,     0 ],
+                                       3    => [ 0,    0,     0 ],
+                                       4    => [ 0,    0,     0 ],
+                        },
+                        teacher=>    { 1    => [ 0,    0,     0 ],
+                                       2    => [ 0,    0,     0 ],
+                                       3    => [ 0,    0,     0 ],
+                                       4    => [ 0,    0,     0 ],
+                        },
                     });
 
 get '/' => {text => 'I ♥ Mojolicious!'};
@@ -47,19 +53,40 @@ get '/vote' => sub {
 
     my $poll = $cache->get('poll');
 
-    $poll->{$interest}->{kid}[$kid]++;
-    $poll->{$interest}->{sheets}[$sheets]++;
-    $poll->{$interest}->{class}[$class]++;
-    $poll->{$interest}->{teacher}[$teacher]++;
+    foreach my $topic (keys $poll) {
+        $poll->{$topic}->{$kid}    ->[$interest-1]++ if($topic eq 'kid');
+        $poll->{$topic}->{$sheets} ->[$interest-1]++ if($topic eq 'sheets');
+        $poll->{$topic}->{$class}  ->[$interest-1]++ if($topic eq 'class');
+        $poll->{$topic}->{$teacher}->[$interest-1]++ if($topic eq 'teacher');
+    }
 
-#    use Data::Dumper;
-#    print Dumper($poll);
+    use Data::Dumper;
+    print Dumper($poll);
 
     $cache->set('poll' => $poll);
 
     $self->stash( message => "Danke für die Teilnahme!" );
         
 } => 'vote'; # template call
+
+get '/poll' => sub {
+
+    my $self = shift;
+
+    my $poll = $cache->get('poll');
+
+    foreach my $topic (keys $poll) {
+        my $chart = School::Evaluation::Gibbmers::Chart->new();
+        
+        $chart->set_1bad_sizes($poll->{$topic}->{1});
+        $chart->set_2mid_sizes($poll->{$topic}->{2});
+        $chart->set_3hig_sizes($poll->{$topic}->{3});
+        $chart->set_4sup_sizes($poll->{$topic}->{4});
+
+        $chart->render_chart($topic . '.png');
+    }
+
+} => 'poll';
 
 app->start;
 
@@ -70,6 +97,14 @@ __DATA__
 <html lang="de"><head><meta charset="utf-8"><title>Gibbmers</title></head>
 <body>
 <%= $message %>
+</body>
+</html>
+
+@@ poll.html.ep
+<!DOCTYPE html>
+<html lang="de"><head><meta charset="utf-8"><title>Gibbmers</title></head>
+<body>
+ <img src="kid.png" alt="Smiley face"> 
 </body>
 </html>
 
