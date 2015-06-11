@@ -83,7 +83,7 @@ get '/poll' => sub {
         $chart->set_3hig_sizes($poll->{$topic}->{3});
         $chart->set_4sup_sizes($poll->{$topic}->{4});
 
-        $chart->render_chart('public/' . $topic . '.png');
+        $chart->render_chart("Auswertung $topic", 'public/' . $topic . '.png');
     }
 
 } => 'poll';

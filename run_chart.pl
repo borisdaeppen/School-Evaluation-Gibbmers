@@ -8,4 +8,4 @@ $chart->set_2mid_sizes([2, 2, 0]);
 $chart->set_3hig_sizes([1, 5, 0]);
 $chart->set_4sup_sizes([0, 3, 2]);
 
-$chart->render_chart('bubble.png');
+$chart->render_chart('Test', 'bubble.png');

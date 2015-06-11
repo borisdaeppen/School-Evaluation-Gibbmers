@@ -42,7 +42,8 @@ sub set_4sup_sizes {
 }
 
 sub render_chart {
-    my $self = shift;
+    my $self     = shift;
+    my $title    = shift;
     my $filename = shift;
 
     my $cc = Chart::Clicker->new(   width  => 400,
@@ -77,7 +78,7 @@ sub render_chart {
         name    => "Super"
     );
     
-    $cc->title->text('Unterlagen Modul');
+    $cc->title->text($title);
     $cc->title->padding->bottom(5);
     
     my $ds = Chart::Clicker::Data::DataSet->new(
