@@ -42,6 +42,17 @@ Wie stark haben Sie an dem Fach ein <b>persönliches</b> Interesse
 
 <h2>Frage 2</h2>
 <p>
+Wie gross ist Ihr Einsatz für das Fach (Aufmerksamkeit im Unterricht und bei Aufgaben, Arbeiten ausserhalb der Schule)?
+</p>
+<p>
+ <input type="radio" name="sheets" value="1">schlecht
+ <input type="radio" name="sheets" value="2">naja
+ <input type="radio" name="sheets" value="3">gut
+ <input type="radio" name="sheets" value="4">super
+</p>
+
+<h2>Frage 3</h2>
+<p>
 Wie geeignet sind die <b>offiziellen Modulunterlagen</b> auf dem Share für den Unterricht?
 Wie finden Sie diese?
 </p>
@@ -52,7 +63,7 @@ Wie finden Sie diese?
  <input type="radio" name="sheets" value="4">super
 </p>
 
-<h2>Frage 3</h2>
+<h2>Frage 4</h2>
 <p>
 Wie steht es um den Klassengeist?
 Unterstützen Sie sich gegenseitig?
@@ -66,7 +77,7 @@ Wie ist die <b>Stimmung</b> in der Klasse?
  <input type="radio" name="class" value="4">super
 </p>
 
-<h2>Frage 4</h2>
+<h2>Frage 5</h2>
 <p>
 Wie beurteilen Sie die <b>Unterstützung</b> im Lernprozess durch die Lehrperson?
 </p>
