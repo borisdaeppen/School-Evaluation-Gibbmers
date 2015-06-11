@@ -13,31 +13,32 @@ use Chart::Clicker::Renderer::Bubble;
 use Graphics::Color::RGB;
 use Geometry::Primitive::Circle;
 
-my $bad = [0, 0, 0, 0];
-my $mid = [0, 0, 0, 0];
-my $hig = [0, 0, 0, 0];
-my $sup = [0, 0, 0, 0];
 
 sub new {
     my $class = shift;
-    my $self  = {};
+    my $self  = {
+                    bad => [0, 0, 0, 0],
+                    mid => [0, 0, 0, 0],
+                    hig => [0, 0, 0, 0],
+                    sup => [0, 0, 0, 0],
+        };
     bless ($self, $class);
 }
 sub set_1bad_sizes {
     my $self = shift;
-    $self->bad = shift;
+    $self->{bad} = shift;
 }
 sub set_2mid_sizes {
     my $self = shift;
-    $self->mid = shift;
+    $self->{mid} = shift;
 }
 sub set_3hig_sizes {
     my $self = shift;
-    $self->hig = shift;
+    $self->{hig} = shift;
 }
 sub set_4sup_sizes {
     my $self = shift;
-    $self->sup = shift;
+    $self->{sup} = shift;
 }
 
 sub render_chart {
@@ -51,28 +52,28 @@ sub render_chart {
     my $values_bad = Chart::Clicker::Data::Series::Size->new(
         keys    => [qw(1 2 3 4)],
         values  => [qw(1 1 1 1)],
-        sizes   => $self->bad,
+        sizes   => $self->{bad},
         name    => "Schlecht"
     );
     
     my $values_mid = Chart::Clicker::Data::Series::Size->new(
         keys    => [qw(1 2 3 4)],
         values  => [qw(2 2 2 4)],
-        sizes   => $self->mid,
+        sizes   => $self->{mid},
         name    => "Naja"
     );
     
     my $values_hig = Chart::Clicker::Data::Series::Size->new(
         keys    => [qw(1 2 3 4)],
         values  => [qw(3 3 3 3)],
-        sizes   => $self->hig,
+        sizes   => $self->{hig},
         name    => "Gut"
     );
     
     my $values_sup = Chart::Clicker::Data::Series::Size->new(
         keys    => [qw(1 2 3 4)],
         values  => [qw(4 4 4 4)],
-        sizes   => $self->sup,
+        sizes   => $self->{sup},
         name    => "Super"
     );
     
