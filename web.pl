@@ -9,27 +9,27 @@ my $cache = Mojo::Cache->new(max_keys => 30);
 
 # data structure:      # topic     # value      # interests
 $cache->set(poll =>
-                    {   Teilnehmer    =>    { 1    => [ 0,    0,     0 ],
+             {   Teilnehmer    =>    { 1    => [ 0,    0,     0 ],
                                        2    => [ 0,    0,     0 ],
                                        3    => [ 0,    0,     0 ],
                                        4    => [ 0,    0,     0 ],
                         },
-                        Unterlagen =>    { 1    => [ 0,    0,     0 ],
+                 Unterlagen =>       { 1    => [ 0,    0,     0 ],
                                        2    => [ 0,    0,     0 ],
                                        3    => [ 0,    0,     0 ],
                                        4    => [ 0,    0,     0 ],
                         },
-                        Klasse  =>    { 1    => [ 0,    0,     0 ],
+                 Klasse  =>          { 1    => [ 0,    0,     0 ],
                                        2    => [ 0,    0,     0 ],
                                        3    => [ 0,    0,     0 ],
                                        4    => [ 0,    0,     0 ],
                         },
-                        Lehrperson=>    { 1    => [ 0,    0,     0 ],
+                 Lehrperson=>        { 1    => [ 0,    0,     0 ],
                                        2    => [ 0,    0,     0 ],
                                        3    => [ 0,    0,     0 ],
                                        4    => [ 0,    0,     0 ],
                         },
-                    });
+              });
 
 # start page with menu links
 get '/' => {template => 'root'};
@@ -54,19 +54,23 @@ get '/vote' => sub {
 
     $cache->set($client_ip => 1);
 
-    my $interest = $self->param('interest');
-    my $Teilnehmer      = $self->param('Teilnehmer');
-    my $Unterlagen   = $self->param('Unterlagen');
-    my $Klasse    = $self->param('Klasse');
-    my $Lehrperson  = $self->param('Lehrperson');
+    my $interest   = $self->param('interest');
+    my $Teilnehmer = $self->param('Teilnehmer');
+    my $Unterlagen = $self->param('Unterlagen');
+    my $Klasse     = $self->param('Klasse');
+    my $Lehrperson = $self->param('Lehrperson');
 
     my $poll = $cache->get('poll');
 
     foreach my $topic (keys $poll) {
-        $poll->{$topic}->{$Teilnehmer}    ->[$interest-1]++ if($topic eq 'Teilnehmer');
-        $poll->{$topic}->{$Unterlagen} ->[$interest-1]++ if($topic eq 'Unterlagen');
-        $poll->{$topic}->{$Klasse}  ->[$interest-1]++ if($topic eq 'Klasse');
-        $poll->{$topic}->{$Lehrperson}->[$interest-1]++ if($topic eq 'Lehrperson');
+        $poll->{$topic}{$Teilnehmer}[$interest-1]++
+            if($topic eq 'Teilnehmer');
+        $poll->{$topic}{$Unterlagen}[$interest-1]++
+            if($topic eq 'Unterlagen');
+        $poll->{$topic}{$Klasse}[$interest-1]++
+            if($topic eq 'Klasse');
+        $poll->{$topic}{$Lehrperson}[$interest-1]++
+            if($topic eq 'Lehrperson');
     }
 
     #use Data::Dumper;
