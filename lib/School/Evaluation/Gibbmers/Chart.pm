@@ -13,6 +13,9 @@ use Chart::Clicker::Renderer::Bubble;
 use Graphics::Color::RGB;
 use Geometry::Primitive::Circle;
 
+# only needed to monkey with color changing
+use Graphics::Color::RGB;
+use Chart::Clicker::Drawing::ColorAllocator;
 
 sub new {
     my $class = shift;
@@ -89,6 +92,32 @@ sub render_chart {
                   ]);
     
     $cc->add_to_datasets($ds);
+
+    # COLORS #
+    ##########
+    # build the color allocator
+    my $ca = Chart::Clicker::Drawing::ColorAllocator->new;
+    # this hash is simply here to make things readable and cleaner,
+    # can always call G::C::R inline
+    my $green = Graphics::Color::RGB->new({
+        red => 0,green => 1, blue=> 0, alpha=> .9
+    });
+    my $green_red = Graphics::Color::RGB->new({
+        red => 0.25,green => .75, blue=> 0, alpha=> .9
+    });
+    my $red_green = Graphics::Color::RGB->new({
+        red => .75, green => 0.25, blue => 0, alpha => .9
+    });
+    my $red= Graphics::Color::RGB->new({
+        red => 1, green => 0, blue => 0, alpha => .9
+    });
+    # add colors
+    $ca->add_to_colors($red);
+    $ca->add_to_colors($red_green);
+    $ca->add_to_colors($green_red);
+    $ca->add_to_colors($green);
+    $cc->color_allocator($ca);
+
     
     my $cnf = $cc->get_context('default');
     
