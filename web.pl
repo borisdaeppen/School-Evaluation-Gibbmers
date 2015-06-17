@@ -60,6 +60,18 @@ get '/vote' => sub {
     my $Klasse     = $self->param('Klasse');
     my $Lehrperson = $self->param('Lehrperson');
 
+    # only one decimal number allowed per argument
+    unless (       $interest =~ /^\d$/
+             and $Teilnehmer =~ /^\d$/
+             and $Unterlagen =~ /^\d$/
+             and $Klasse     =~ /^\d$/
+             and $Lehrperson =~ /^\d$/
+           ) {
+        $self->stash( message => "Kappa" );
+        return $self->render;
+        # EXIT and render
+    }
+
     my $poll = $cache->get('poll');
 
     foreach my $topic (keys $poll) {
