@@ -2,35 +2,44 @@ use Mojolicious::Lite;
 use Mojo::Cache;
 use School::Evaluation::Gibbmers::Chart;
 
+# this cache will hold all the data during a poll
+# each poll needs to have a freshly started server
+# we will assume, that there won't be mor than 30 clients
 my $cache = Mojo::Cache->new(max_keys => 30);
 
-                      # topic     # value      # interests
+# data structure:      # topic     # value      # interests
 $cache->set(poll =>
-                    {   kid    =>    { 1    => [ 0,    0,     0 ],
+                    {   Teilnehmer    =>    { 1    => [ 0,    0,     0 ],
                                        2    => [ 0,    0,     0 ],
                                        3    => [ 0,    0,     0 ],
                                        4    => [ 0,    0,     0 ],
                         },
-                        sheets =>    { 1    => [ 0,    0,     0 ],
+                        Unterlagen =>    { 1    => [ 0,    0,     0 ],
                                        2    => [ 0,    0,     0 ],
                                        3    => [ 0,    0,     0 ],
                                        4    => [ 0,    0,     0 ],
                         },
-                        class  =>    { 1    => [ 0,    0,     0 ],
+                        Klasse  =>    { 1    => [ 0,    0,     0 ],
                                        2    => [ 0,    0,     0 ],
                                        3    => [ 0,    0,     0 ],
                                        4    => [ 0,    0,     0 ],
                         },
-                        teacher=>    { 1    => [ 0,    0,     0 ],
+                        Lehrperson=>    { 1    => [ 0,    0,     0 ],
                                        2    => [ 0,    0,     0 ],
                                        3    => [ 0,    0,     0 ],
                                        4    => [ 0,    0,     0 ],
                         },
                     });
 
+# start page with menu links
 get '/' => {template => 'root'};
 
+# page with questions in a form to fill out
+# for clients
 get '/form' => {template => 'form'};
+
+# page triggered by the form-page
+# evaluate what clients said
 get '/vote' => sub {
 
     my $self = shift;
@@ -39,29 +48,29 @@ get '/vote' => sub {
 
     if ($cache->get($client_ip)) {
         $self->stash( message => "Sie haben bereits teilgenommen!" );
-        $self->render;
+        return $self->render;
         # EXIT and render
     }
 
     $cache->set($client_ip => 1);
 
     my $interest = $self->param('interest');
-    my $kid      = $self->param('kid');
-    my $sheets   = $self->param('sheets');
-    my $class    = $self->param('class');
-    my $teacher  = $self->param('teacher');
+    my $Teilnehmer      = $self->param('Teilnehmer');
+    my $Unterlagen   = $self->param('Unterlagen');
+    my $Klasse    = $self->param('Klasse');
+    my $Lehrperson  = $self->param('Lehrperson');
 
     my $poll = $cache->get('poll');
 
     foreach my $topic (keys $poll) {
-        $poll->{$topic}->{$kid}    ->[$interest-1]++ if($topic eq 'kid');
-        $poll->{$topic}->{$sheets} ->[$interest-1]++ if($topic eq 'sheets');
-        $poll->{$topic}->{$class}  ->[$interest-1]++ if($topic eq 'class');
-        $poll->{$topic}->{$teacher}->[$interest-1]++ if($topic eq 'teacher');
+        $poll->{$topic}->{$Teilnehmer}    ->[$interest-1]++ if($topic eq 'Teilnehmer');
+        $poll->{$topic}->{$Unterlagen} ->[$interest-1]++ if($topic eq 'Unterlagen');
+        $poll->{$topic}->{$Klasse}  ->[$interest-1]++ if($topic eq 'Klasse');
+        $poll->{$topic}->{$Lehrperson}->[$interest-1]++ if($topic eq 'Lehrperson');
     }
 
-    use Data::Dumper;
-    print Dumper($poll);
+    #use Data::Dumper;
+    #print Dumper($poll);
 
     $cache->set('poll' => $poll);
 
@@ -69,6 +78,9 @@ get '/vote' => sub {
         
 } => 'vote'; # template call
 
+# page to collect the results
+# best used after all clients have sent data
+# will create pictures on the harddrive
 get '/poll' => sub {
 
     my $self = shift;
@@ -116,10 +128,10 @@ __DATA__
 <html lang="de"><head><meta charset="utf-8"><title>Gibbmers</title></head>
 <body>
  <h1>Auswertung</h1>
- <img src="kid.png" alt="Selbsteinschätzung"> 
- <img src="class.png" alt="Klassenklima"><br />
- <img src="sheets.png" alt="Modulunterlagen"> 
- <img src="teacher.png" alt="Lehrperson"> 
+ <img src="Teilnehmer.png" alt="Selbsteinschätzung"> 
+ <img src="Klasse.png" alt="Klassenklima"><br />
+ <img src="Unterlagen.png" alt="Modulunterlagen"> 
+ <img src="Lehrperson.png" alt="Lehrperson"> 
 </body>
 </html>
 
@@ -146,10 +158,10 @@ Wie stark haben Sie an dem Fach ein <b>persönliches</b> Interesse
 Wie gross ist Ihr Einsatz für das Fach (Aufmerksamkeit im Unterricht und bei Aufgaben, Arbeiten ausserhalb der Schule)?
 </p>
 <p>
- <input type="radio" name="kid" value="1">schlecht
- <input type="radio" name="kid" value="2">naja
- <input type="radio" name="kid" value="3">gut
- <input type="radio" name="kid" value="4">super
+ <input type="radio" name="Teilnehmer" value="1">schlecht
+ <input type="radio" name="Teilnehmer" value="2">naja
+ <input type="radio" name="Teilnehmer" value="3">gut
+ <input type="radio" name="Teilnehmer" value="4">super
 </p>
 
 <h2>Frage 3</h2>
@@ -158,10 +170,10 @@ Wie geeignet sind die <b>offiziellen Modulunterlagen</b> auf dem Share für den 
 Wie finden Sie diese?
 </p>
 <p>
- <input type="radio" name="sheets" value="1">schlecht
- <input type="radio" name="sheets" value="2">naja
- <input type="radio" name="sheets" value="3">gut
- <input type="radio" name="sheets" value="4">super
+ <input type="radio" name="Unterlagen" value="1">schlecht
+ <input type="radio" name="Unterlagen" value="2">naja
+ <input type="radio" name="Unterlagen" value="3">gut
+ <input type="radio" name="Unterlagen" value="4">super
 </p>
 
 <h2>Frage 4</h2>
@@ -172,10 +184,10 @@ Ist der Umgang respektvoll?
 Wie ist die <b>Stimmung</b> in der Klasse?
 </p>
 <p>
- <input type="radio" name="class" value="1">schlecht
- <input type="radio" name="class" value="2">naja
- <input type="radio" name="class" value="3">gut
- <input type="radio" name="class" value="4">super
+ <input type="radio" name="Klasse" value="1">schlecht
+ <input type="radio" name="Klasse" value="2">naja
+ <input type="radio" name="Klasse" value="3">gut
+ <input type="radio" name="Klasse" value="4">super
 </p>
 
 <h2>Frage 5</h2>
@@ -183,10 +195,10 @@ Wie ist die <b>Stimmung</b> in der Klasse?
 Wie beurteilen Sie die <b>Unterstützung</b> im Lernprozess durch die Lehrperson?
 </p>
 <p>
- <input type="radio" name="teacher" value="1">schlecht
- <input type="radio" name="teacher" value="2">naja
- <input type="radio" name="teacher" value="3">gut
- <input type="radio" name="teacher" value="4">super
+ <input type="radio" name="Lehrperson" value="1">schlecht
+ <input type="radio" name="Lehrperson" value="2">naja
+ <input type="radio" name="Lehrperson" value="3">gut
+ <input type="radio" name="Lehrperson" value="4">super
 </p>
  <br />
  <input type="submit" value="Submit">
