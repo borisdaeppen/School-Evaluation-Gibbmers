@@ -47,14 +47,15 @@ get '/vote' => sub {
     my $self = shift;
 
     my $client_ip = $self->tx->remote_address;
+    $self->app->log->debug("Hello $client_ip ");
 
-    if ($cache->get($client_ip)) {
-        $self->stash( message => "Sie haben bereits teilgenommen!" );
-        return $self->render;
+#    if ($cache->get($client_ip)) {
+#        $self->stash( message => "Sie haben bereits teilgenommen!" );
+#        return $self->render;
         # EXIT and render
-    }
+#    }
 
-    $cache->set($client_ip => 1);
+#    $cache->set($client_ip => 1);
 
     my $interest   = $self->param('interest');
     my $Teilnehmer = $self->param('Teilnehmer');
