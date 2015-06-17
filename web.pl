@@ -7,28 +7,28 @@ use School::Evaluation::Gibbmers::Chart;
 # we will assume, that there won't be mor than 30 clients
 my $cache = Mojo::Cache->new(max_keys => 30);
 
-# data structure:      # topic     # value      # interests
+# data structure:      # topic   # value    # interests
 $cache->set(poll =>
-             {   Teilnehmer    =>    { 1    => [ 0,    0,     0 ],
-                                       2    => [ 0,    0,     0 ],
-                                       3    => [ 0,    0,     0 ],
-                                       4    => [ 0,    0,     0 ],
-                        },
-                 Unterlagen =>       { 1    => [ 0,    0,     0 ],
-                                       2    => [ 0,    0,     0 ],
-                                       3    => [ 0,    0,     0 ],
-                                       4    => [ 0,    0,     0 ],
-                        },
-                 Klasse  =>          { 1    => [ 0,    0,     0 ],
-                                       2    => [ 0,    0,     0 ],
-                                       3    => [ 0,    0,     0 ],
-                                       4    => [ 0,    0,     0 ],
-                        },
-                 Lehrperson=>        { 1    => [ 0,    0,     0 ],
-                                       2    => [ 0,    0,     0 ],
-                                       3    => [ 0,    0,     0 ],
-                                       4    => [ 0,    0,     0 ],
-                        },
+             {   Teilnehmer    => { 1    => [ 0, 0, 0 ],
+                                    2    => [ 0, 0, 0 ],
+                                    3    => [ 0, 0, 0 ],
+                                    4    => [ 0, 0, 0 ],
+                 },
+                 Unterlagen    => { 1    => [ 0, 0, 0 ],
+                                    2    => [ 0, 0, 0 ],
+                                    3    => [ 0, 0, 0 ],
+                                    4    => [ 0, 0, 0 ],
+                 },
+                 Klasse        => { 1    => [ 0, 0, 0 ],
+                                    2    => [ 0, 0, 0 ],
+                                    3    => [ 0, 0, 0 ],
+                                    4    => [ 0, 0, 0 ],
+                 },
+                 Lehrperson    => { 1    => [ 0, 0, 0 ],
+                                    2    => [ 0, 0, 0 ],
+                                    3    => [ 0, 0, 0 ],
+                                    4    => [ 0, 0, 0 ],
+                 },
               });
 
 # start page with menu links
@@ -99,7 +99,7 @@ get '/poll' => sub {
         $chart->set_3hig_sizes($poll->{$topic}->{3});
         $chart->set_4sup_sizes($poll->{$topic}->{4});
 
-        $chart->render_chart("Auswertung $topic", 'public/' . $topic . '.png');
+        $chart->render_chart("Auswertung $topic", 'public/'.$topic.'.png');
     }
 
 } => 'poll';
