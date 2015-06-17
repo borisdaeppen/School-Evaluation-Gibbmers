@@ -1,6 +1,8 @@
 use Mojolicious::Lite;
 use Mojo::Cache;
+#use lib "lib";
 use School::Evaluation::Gibbmers::Chart;
+use Mojo::Server::Daemon;
 
 # this cache will hold all the data during a poll
 # each poll needs to have a freshly started server
@@ -116,7 +118,12 @@ get '/poll' => sub {
 
 } => 'poll';
 
-app->start;
+my $daemon = Mojo::Server::Daemon->new(
+    app    => app,
+    listen => ["http://*:8443"]
+    );
+$daemon->run;
+#app->start;
 
 __DATA__
 
