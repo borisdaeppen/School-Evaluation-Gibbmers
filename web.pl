@@ -5,8 +5,6 @@ use School::Evaluation::Gibbmers::Chart;
 use Mojo::Server::Daemon;
 
 # this cache will hold all the data during a poll
-# each poll needs to have a freshly started server
-# we will assume, that there won't be mor than 30 clients
 my $cache = Mojo::Cache->new(max_keys => 30);
 
 # data structure:      # topic   # value    # interests
