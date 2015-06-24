@@ -1,8 +1,10 @@
+#!/usr/bin/env perl
 use Mojolicious::Lite;
 use Mojo::Cache;
-#use lib "lib";
-use School::Evaluation::Gibbmers::Chart;
 use Mojo::Server::Daemon;
+# include modules located in local lib
+use lib "lib";
+use School::Evaluation::Gibbmers::Chart;
 
 app->secrets(['This is not secure...']);
 
