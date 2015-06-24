@@ -31,6 +31,29 @@ $cache->set(poll =>
                  },
               });
 
+# gets called for every request
+under sub {
+
+    my $self = shift;
+
+    # maybe we can use some of the info to protect against spamming
+    my $request_ip              = $self->tx->remote_address;
+    my $original_remote_address = $self->tx->original_remote_address;
+    my $local_address           = $self->tx->local_address;
+    my $local_port              = $self->tx->local_port;
+    my $remote_port             = $self->tx->remote_port;
+    use Data::Dumper::Names;
+    print Dumper(   $request_ip,
+                    $original_remote_address,
+                    $local_address,
+                    $local_port,
+                    $remote_port
+                );
+
+    return 1;
+
+};
+
 # start page with menu links
 get '/' => {template => 'root'};
 
