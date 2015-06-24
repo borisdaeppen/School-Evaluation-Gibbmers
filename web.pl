@@ -67,8 +67,8 @@ get '/vote' => sub {
 
     my $self = shift;
 
-    my $client_ip = $self->tx->remote_address;
-    $self->app->log->debug("Hello $client_ip ");
+    #my $client_ip = $self->tx->remote_address;
+    #$self->app->log->debug("Hello $client_ip ");
 
 #    if ($cache->get($client_ip)) {
 #        $self->stash( message => "Sie haben bereits teilgenommen!" );
@@ -113,6 +113,7 @@ get '/vote' => sub {
     #print Dumper($poll);
 
     $cache->set('poll' => $poll);
+    $cache->set('poll_updated' => 1);
 
     $self->stash( message => "Danke für die Teilnahme!" );
         
@@ -125,17 +126,24 @@ get '/poll' => sub {
 
     my $self = shift;
 
-    my $poll = $cache->get('poll');
+    if ($cache->get('poll_updated')) {
 
-    foreach my $topic (keys $poll) {
-        my $chart = School::Evaluation::Gibbmers::Chart->new();
-        
-        $chart->set_1bad_sizes($poll->{$topic}->{1});
-        $chart->set_2mid_sizes($poll->{$topic}->{2});
-        $chart->set_3hig_sizes($poll->{$topic}->{3});
-        $chart->set_4sup_sizes($poll->{$topic}->{4});
+        $cache->set('poll_updated' => 0);
+        $self->app->log->debug("Creating charts due to new data.");
+        my $poll = $cache->get('poll');
 
-        $chart->render_chart("Auswertung $topic", 'public/'.$topic.'.png');
+        foreach my $topic (keys $poll) {
+            my $chart = School::Evaluation::Gibbmers::Chart->new();
+            
+            $chart->set_1bad_sizes($poll->{$topic}->{1});
+            $chart->set_2mid_sizes($poll->{$topic}->{2});
+            $chart->set_3hig_sizes($poll->{$topic}->{3});
+            $chart->set_4sup_sizes($poll->{$topic}->{4});
+
+            $chart->render_chart(   "Auswertung $topic",
+                                    'public/'.$topic.'.png'
+                                );
+        }
     }
 
 } => 'poll';
