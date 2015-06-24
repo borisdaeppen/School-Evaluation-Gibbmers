@@ -78,6 +78,16 @@ get '/vote' => sub {
 
 #    $cache->set($client_ip => 1);
 
+    # denie multiple voting by cookie
+    unless ($self->cookie('voted')) {
+        $self->cookie('voted' => 1)
+    }
+    else {
+        $self->stash( message => "Sie haben bereits teilgenommen!" );
+        return $self->render;
+        # EXIT and render
+    }
+
     my $interest   = $self->param('interest');
     my $Teilnehmer = $self->param('Teilnehmer');
     my $Unterlagen = $self->param('Unterlagen');
