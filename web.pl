@@ -4,6 +4,8 @@ use Mojo::Cache;
 use School::Evaluation::Gibbmers::Chart;
 use Mojo::Server::Daemon;
 
+app->secrets(['This is not secure...']);
+
 # this cache will hold all the data during a poll
 my $cache = Mojo::Cache->new(max_keys => 30);
 
