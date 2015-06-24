@@ -11,6 +11,8 @@ app->secrets(['This is not secure...']);
 # this cache will hold all the data during a poll
 my $cache = Mojo::Cache->new(max_keys => 30);
 
+$cache->set('startutime' => time() );
+
 # data structure:      # topic   # value    # interests
 $cache->set(poll =>
              {   Teilnehmer    => { 1    => [ 0, 0, 0 ],
@@ -83,8 +85,9 @@ get '/vote' => sub {
 #    $cache->set($client_ip => 1);
 
     # denie multiple voting by cookie
-    unless ($self->cookie('voted')) {
-        $self->cookie('voted' => 1)
+    my $cookie_name = 'voted_' . $cache->get('startutime');
+    unless ($self->cookie($cookie_name)) {
+        $self->cookie($cookie_name => 1, { expires  => time + 3600 });
     }
     else {
         $self->stash( message => "Sie haben bereits teilgenommen!" );
