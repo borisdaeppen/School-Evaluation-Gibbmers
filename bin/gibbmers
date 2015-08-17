@@ -2,21 +2,49 @@
 use Mojolicious::Lite;
 use Mojo::Cache;
 use Mojo::Server::Daemon;
+
+#use Config::Any;
+use YAML::Tiny;
+
 # include modules located in local lib
 use lib "lib";
 use School::Evaluation::Gibbmers::Chart;
 
-app->secrets(['This is not secure...']);
+# load config
+my $conf_file = '';
+if (-f 'gibbmers.conf.yml') {
+    $conf_file = 'gibbmers.conf.yml';
+}
+else {
+    $conf_file = '/etc/gibbmers.conf.yml';
+}
+my $yaml = YAML::Tiny->read( $conf_file );
+my $config = $yaml->[0];
+
+# define global variables for configurable parameters
+my $encryption_key = $config->{encryption_key};
+my $cache_slots    = $config->{cache_slots};
+my $public_dir     = $config->{data_dir};
+my $port           = $config->{port};
+my $q1             = $config->{'1personal_intrest_html'};
+my $q2             = $config->{'2question_html'};
+my $q3             = $config->{'3question_html'};
+my $q4             = $config->{'4question_html'};
+my $q5             = $config->{'5question_html'};
+
+app->secrets([$encryption_key]);
 
 # this cache will hold all the data during a poll
-my $cache = Mojo::Cache->new(max_keys => 30);
+my $cache = Mojo::Cache->new(max_keys => $cache_slots);
 
 $cache->set('startutime' => time() );
 
 # replace static-public path
-my $public_dir = '/tmp/Gibbmers';
 ${app->static->paths}[0] = $public_dir;
-mkdir $public_dir unless (-d $public_dir);
+unless (-d $public_dir) {
+    app->log->debug("Data directory not found. Creating $public_dir");
+    mkdir $public_dir;
+}
 
 # data structure:      # topic   # value    # interests
 $cache->set(poll =>
@@ -60,7 +88,6 @@ under sub {
                     $local_port,
                     $remote_port
                 );
-    print Dumper(app->static->paths);
 
     return 1;
 
@@ -71,7 +98,10 @@ get '/' => {template => 'root'};
 
 # page with questions in a form to fill out
 # for clients
-get '/form' => {template => 'form'};
+get '/form' => sub {
+    my $self = shift;
+    $self->stash(q1 => $q1, q2 => $q2, q3 => $q3, q4 => $q4, q5 => $q5);
+} => 'form';
 
 # page triggered by the form-page
 # evaluate what clients said
@@ -173,7 +203,7 @@ get '/poll' => sub {
 
 my $daemon = Mojo::Server::Daemon->new(
     app    => app,
-    listen => ["http://*:8443"]
+    listen => ["http://*:$port"]
     );
 $daemon->run;
 #app->start;
@@ -220,8 +250,7 @@ __DATA__
 
 <h2>Frage 1</h2>
 <p>
-Wie stark haben Sie an dem Fach ein <b>persönliches</b> Interesse
-(unabhängig von anderen Faktoren, wie Unterlagen oder Lehrperson)?
+<%= $q1 %>
 </p>
 <p>
  <input type="radio" name="interest" value="1">wenig
@@ -231,7 +260,7 @@ Wie stark haben Sie an dem Fach ein <b>persönliches</b> Interesse
 
 <h2>Frage 2</h2>
 <p>
-Wie gross ist Ihr Einsatz für das Fach (Aufmerksamkeit im Unterricht und bei Aufgaben, Arbeiten ausserhalb der Schule)?
+<%= $q2 %>
 </p>
 <p>
  <input type="radio" name="Teilnehmer" value="1">schlecht
@@ -242,8 +271,7 @@ Wie gross ist Ihr Einsatz für das Fach (Aufmerksamkeit im Unterricht und bei Au
 
 <h2>Frage 3</h2>
 <p>
-Wie geeignet sind die <b>offiziellen Modulunterlagen</b> auf dem Share für den Unterricht?
-Wie finden Sie diese?
+<%= $q3 %>
 </p>
 <p>
  <input type="radio" name="Unterlagen" value="1">schlecht
@@ -254,10 +282,7 @@ Wie finden Sie diese?
 
 <h2>Frage 4</h2>
 <p>
-Wie steht es um den Klassengeist?
-Unterstützen Sie sich gegenseitig?
-Ist der Umgang respektvoll?
-Wie ist die <b>Stimmung</b> in der Klasse?
+<%= $q4 %>
 </p>
 <p>
  <input type="radio" name="Klasse" value="1">schlecht
@@ -268,7 +293,7 @@ Wie ist die <b>Stimmung</b> in der Klasse?
 
 <h2>Frage 5</h2>
 <p>
-Wie beurteilen Sie die <b>Unterstützung</b> im Lernprozess durch die Lehrperson?
+<%= $q5 %>
 </p>
 <p>
  <input type="radio" name="Lehrperson" value="1">schlecht
