@@ -253,7 +253,7 @@ __DATA__
 
 <h2>Frage 1</h2>
 <p>
-<%= $q1 %>
+<%== $q1 %>
 </p>
 <p>
  <input type="radio" name="interest" value="1">wenig
@@ -263,7 +263,7 @@ __DATA__
 
 <h2>Frage 2</h2>
 <p>
-<%= $q2 %>
+<%== $q2 %>
 </p>
 <p>
  <input type="radio" name="Teilnehmer" value="1">schlecht
@@ -274,7 +274,7 @@ __DATA__
 
 <h2>Frage 3</h2>
 <p>
-<%= $q3 %>
+<%== $q3 %>
 </p>
 <p>
  <input type="radio" name="Unterlagen" value="1">schlecht
@@ -285,7 +285,7 @@ __DATA__
 
 <h2>Frage 4</h2>
 <p>
-<%= $q4 %>
+<%== $q4 %>
 </p>
 <p>
  <input type="radio" name="Klasse" value="1">schlecht
@@ -296,7 +296,7 @@ __DATA__
 
 <h2>Frage 5</h2>
 <p>
-<%= $q5 %>
+<%== $q5 %>
 </p>
 <p>
  <input type="radio" name="Lehrperson" value="1">schlecht
