@@ -26,6 +26,7 @@ my $encryption_key = $config->{encryption_key};
 my $cache_slots    = $config->{cache_slots};
 my $public_dir     = $config->{data_dir};
 my $port           = $config->{port};
+my $set_cookie     = $config->{set_cookie};
 my $q1             = $config->{'1personal_intrest_html'};
 my $q2             = $config->{'2question_html'};
 my $q3             = $config->{'3question_html'};
@@ -120,15 +121,17 @@ get '/vote' => sub {
 
 #    $cache->set($client_ip => 1);
 
-    # denie multiple voting by cookie
-    my $cookie_name = 'voted_' . $cache->get('startutime');
-    unless ($self->cookie($cookie_name)) {
-        $self->cookie($cookie_name => 1, { expires  => time + 3600 });
-    }
-    else {
-        $self->stash( message => "Sie haben bereits teilgenommen!" );
-        return $self->render;
-        # EXIT and render
+    if ($set_cookie) {
+        # denie multiple voting by cookie
+        my $cookie_name = 'voted_' . $cache->get('startutime');
+        unless ($self->cookie($cookie_name)) {
+            $self->cookie($cookie_name => 1, { expires  => time + 3600 });
+        }
+        else {
+            $self->stash( message => "Sie haben bereits teilgenommen!" );
+            return $self->render;
+            # EXIT and render
+        }
     }
 
     my $interest   = $self->param('interest');

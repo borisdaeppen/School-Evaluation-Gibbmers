@@ -4,6 +4,7 @@ port: 8443
 encryption_key: 'This is not secure...'
 cache_slots: 30
 data_dir: '/tmp/Gibbmers'
+set_cookie: 1
 # Questions
 1personal_intrest_html: "Wie stark haben Sie an dem Fach ein <b>persönliches</b> Interesse (unabhängig von anderen Faktoren, wie Unterlagen oder Lehrperson)?"
 2question_html: "Wie gross ist Ihr Einsatz für das Fach (Aufmerksamkeit im Unterricht und bei Aufgaben, Arbeiten ausserhalb der Schule)?"
