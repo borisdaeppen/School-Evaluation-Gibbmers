@@ -10,7 +10,6 @@ use Chart::Clicker::Data::Marker;
 use Chart::Clicker::Data::Series::Size;
 use Geometry::Primitive::Rectangle;
 use Chart::Clicker::Renderer::Bubble;
-use Graphics::Color::RGB;
 use Geometry::Primitive::Circle;
 
 # only needed to monkey with color changing
