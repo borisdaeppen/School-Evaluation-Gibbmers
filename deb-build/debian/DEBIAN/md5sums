@@ -1,0 +1,7 @@
+1470be0400792d3f8a4a493e41395fcb  usr/bin/gibbmers
+0092ef431b50953ec8e7917aa24405bd  usr/share/man/man1/gibbmers.1.gz
+479c69265d06680710670cdc9a5c5435  usr/share/doc/gibbmers/changelog.gz
+4b864ee9a3eaa51d2aeed210b0a676b9  usr/share/doc/gibbmers/copyright
+a68f0bfbed78b3c60e12617225496f66  usr/share/doc/gibbmers/changelog.Debian.gz
+ed0857aab89930686215ecec47b43635  usr/share/perl5/School/Evaluation/Gibbmers/Chart.pm
+009964b588f6f1c1b59b40434fd1e82d  etc/gibbmers.conf.yml
