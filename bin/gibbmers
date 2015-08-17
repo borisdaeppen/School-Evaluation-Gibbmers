@@ -7,7 +7,7 @@ use Mojo::Server::Daemon;
 use YAML::Tiny;
 
 # include modules located in local lib
-use lib "lib";
+#use lib "lib";
 use School::Evaluation::Gibbmers::Chart;
 
 # load config
@@ -33,14 +33,16 @@ my $q3             = $config->{'3question_html'};
 my $q4             = $config->{'4question_html'};
 my $q5             = $config->{'5question_html'};
 
+# setup mojo password
 app->secrets([$encryption_key]);
 
 # this cache will hold all the data during a poll
 my $cache = Mojo::Cache->new(max_keys => $cache_slots);
 
+# we'll need this for cookies later
 $cache->set('startutime' => time() );
 
-# replace static-public path
+# replace static-public path for sharing data and images
 ${app->static->paths}[0] = $public_dir;
 unless (-d $public_dir) {
     app->log->debug("Data directory not found. Creating $public_dir");
@@ -154,7 +156,7 @@ get '/vote' => sub {
 
     my $poll = $cache->get('poll');
 
-    foreach my $topic (keys $poll) {
+    foreach my $topic (keys %{$poll}) {
         $poll->{$topic}{$Teilnehmer}[$interest-1]++
             if($topic eq 'Teilnehmer');
         $poll->{$topic}{$Unterlagen}[$interest-1]++
@@ -188,7 +190,7 @@ get '/poll' => sub {
         $self->app->log->debug("Creating charts due to new data.");
         my $poll = $cache->get('poll');
 
-        foreach my $topic (keys $poll) {
+        foreach my $topic (keys %{$poll}) {
             my $chart = School::Evaluation::Gibbmers::Chart->new();
             
             $chart->set_1bad_sizes($poll->{$topic}->{1});
