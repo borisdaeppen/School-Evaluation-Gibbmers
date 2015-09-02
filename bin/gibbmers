@@ -42,6 +42,10 @@ my $cache = Mojo::Cache->new(max_keys => $cache_slots);
 # we'll need this for cookies later
 $cache->set('startutime' => time() );
 
+# we count how many participants voted
+$cache->set('poll_count' => 0 );
+my $poll_count;
+
 # replace static-public path for sharing data and images
 ${app->static->paths}[0] = $public_dir;
 unless (-d $public_dir) {
@@ -174,6 +178,11 @@ get '/vote' => sub {
     $cache->set('poll' => $poll);
     $cache->set('poll_updated' => 1);
 
+    # every vote counts! (and is counted...)
+    $poll_count = $cache->get('poll_count');
+    $poll_count++;
+    $cache->set('poll_count' => $poll_count);
+
     $self->stash( message => "Danke für die Teilnahme!" );
         
 } => 'vote'; # template call
@@ -204,6 +213,7 @@ get '/poll' => sub {
                                 );
         }
     }
+    $self->stash( poll_count => $cache->get('poll_count') );
 
 } => 'poll';
 
@@ -244,6 +254,7 @@ __DATA__
  <img src="Klasse.png" alt="Klassenklima"><br />
  <img src="Unterlagen.png" alt="Modulunterlagen"> 
  <img src="Lehrperson.png" alt="Lehrperson"> 
+ <p>Anzahl Stimmen: <%= $poll_count %></p>
 </body>
 </html>
 
