@@ -316,11 +316,11 @@ a:active { color: #000000; text-decoration: none}
   </article>
   <article>
    <div class="imagedesc"><%== $q3 %></div>
-   <img src="Klasse.png" alt="Klassenklima">
+   <img src="Unterlagen.png" alt="Modulunterlagen">
   </article>
   <article>
    <div class="imagedesc"><%== $q4 %></div>
-   <img src="Unterlagen.png" alt="Modulunterlagen">
+   <img src="Klasse.png" alt="Klassenklima">
   </article>
   <article>
    <div class="imagedesc"><%== $q5 %></div>
