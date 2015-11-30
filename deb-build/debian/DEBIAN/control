@@ -3,7 +3,7 @@ Version: 0.1
 Section: utils
 Priority: extra
 Architecture: all
-Depends: perl (>= 5.18.2), libmojolicious-perl (>= 4.63), libchart-clicker-perl, libgeometry-primitive-perl, libgraphics-color-perl, libyaml-tiny-perl
+Depends: perl (>= 5.18.2), libmojolicious-perl (>= 4.63), libchart-clicker-perl, libgeometry-primitive-perl, libgraphics-color-perl, libyaml-tiny-perl, libio-interface-perl
 Suggests: firefox
 Maintainer: Boris Daeppen <boris_daeppen@bluewin.ch>
 Description: Mini-Software zur Klassenbefragung
@@ -13,4 +13,4 @@ Description: Mini-Software zur Klassenbefragung
  Nicht auf produktiven Systemen einsetzten.
  Gebrauch auf eigene Gefahr.
  Keinerlei Gewähr auf Funktion und Fehlerfreiheit.
-Installed-Size: 88
+Installed-Size: 104
