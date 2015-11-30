@@ -214,6 +214,7 @@ get '/poll' => sub {
         }
     }
     $self->stash( poll_count => $cache->get('poll_count') );
+    $self->stash(q2 => $q2, q3 => $q3, q4 => $q4, q5 => $q5);
 
 } => 'poll';
 
@@ -233,18 +234,22 @@ __DATA__
 <meta charset="utf-8">
 <title>Gibbmers</title>
 <style type="text/css">
+body {
+  margin: 0;
+  padding: 0;
+}
 header {
   background-color: #e6e6e6;
   opacity: 0.8;
   width: 100%;
-  height: 18%;
+  height: 80px;
   top: 0;
   position: fixed;
   z-index: 9;
 }
 section {
   position: absolute;
-  margin-top: 10%;
+  margin-top: 100px;
   z-index: 1;
 }
 article {
@@ -266,8 +271,7 @@ footer {
 </head>
 <body>
  <header>
-  <h1>Gibbmers</h1>
-  Unterrichtsauswertung
+  <h1>Gibbmers Unterrichtsauswertung</h1>
  </header>
  <%= content %>
  <footer>Gibbmers 2015</footer>
@@ -300,19 +304,19 @@ footer {
    Anzahl Stimmen: <%= $poll_count %>
   </article>
   <article>
-   <div class="imagedesc">blah blah blah blah blahblahblahblahblah  aa aa abcd abcd abcd abcd ggggg gggg ggg gggg gggg gggg gggg gggg ggg</div>
+   <div class="imagedesc"><%== $q2 %></div>
    <img src="Teilnehmer.png" alt="Selbsteinschätzung">
   </article>
   <article>
-   <div class="imagedesc">blah blah blah blah blahblahblahblahblah  aa aa abcd abcd abcd abcd ggggg gggg ggg gggg gggg gggg gggg gggg ggg</div>
+   <div class="imagedesc"><%== $q3 %></div>
    <img src="Klasse.png" alt="Klassenklima">
   </article>
   <article>
-   <div class="imagedesc">blah blah blah blah blahblahblahblahblah  aa aa abcd abcd abcd abcd ggggg gggg ggg gggg gggg gggg gggg gggg ggg</div>
+   <div class="imagedesc"><%== $q4 %></div>
    <img src="Unterlagen.png" alt="Modulunterlagen">
   </article>
   <article>
-   <div class="imagedesc">blah blah blah blah blahblahblahblahblah  aa aa abcd abcd abcd abcd ggggg gggg ggg gggg gggg gggg gggg gggg ggg</div>
+   <div class="imagedesc"><%== $q5 %></div>
    <img src="Lehrperson.png" alt="Lehrperson">
   </article>
  </section>
