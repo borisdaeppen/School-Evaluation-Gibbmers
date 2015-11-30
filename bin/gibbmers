@@ -226,26 +226,7 @@ $daemon->run;
 
 __DATA__
 
-@@ root.html.ep
-<!DOCTYPE html>
-<html lang="de"><head><meta charset="utf-8"><title>Gibbmers</title></head>
-<body>
-<h1>GIBBmers - Unterrichtsauswertung</h1>
-<ul>
-<li><a href="/form">Fragebogen</li>
-<li><a href="/poll">Auswertung</li>
-</body>
-</html>
-
-@@ vote.html.ep
-<!DOCTYPE html>
-<html lang="de"><head><meta charset="utf-8"><title>Gibbmers</title></head>
-<body>
-<%= $message %>
-</body>
-</html>
-
-@@ poll.html.ep
+@@ layouts/main.html.ep
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -285,10 +266,39 @@ footer {
 </head>
 <body>
  <header>
-  <h1>Auswertung</h1>
-  Anzahl Stimmen: <%= $poll_count %>
+  <h1>Gibbmers</h1>
+  Unterrichtsauswertung
  </header>
+ <%= content %>
+ <footer>Gibbmers 2015</footer>
+</body>
+</html>
+
+@@ root.html.ep
+% layout 'main';
  <section id="main">
+  <article>
+   <ul>
+    <li><a href="/form">Fragebogen</li>
+    <li><a href="/poll">Auswertung</li>
+   </ul>
+  </article>
+ </section>
+
+@@ vote.html.ep
+% layout 'main';
+ <section id="main">
+  <article>
+   <%= $message %>
+  </article>
+ </section>
+
+@@ poll.html.ep
+% layout 'main';
+ <section id="main">
+  <article>
+   Anzahl Stimmen: <%= $poll_count %>
+  </article>
   <article>
    <div class="imagedesc">blah blah blah blah blahblahblahblahblah  aa aa abcd abcd abcd abcd ggggg gggg ggg gggg gggg gggg gggg gggg ggg</div>
    <img src="Teilnehmer.png" alt="Selbsteinschätzung">
@@ -306,72 +316,68 @@ footer {
    <img src="Lehrperson.png" alt="Lehrperson">
   </article>
  </section>
- <footer>Gibbmers 2015</footer>
-</body>
-</html>
 
 @@ form.html.ep
-<!DOCTYPE html>
-<html lang="de"><head><meta charset="utf-8"><title>Gibbmers</title></head>
-<body>
-<h1>Umfrage Semester</h1>
-<form action="/vote">
-
-<h2>Frage 1</h2>
-<p>
-<%== $q1 %>
-</p>
-<p>
- <input type="radio" name="interest" value="1">wenig
- <input type="radio" name="interest" value="2">mittel
- <input type="radio" name="interest" value="3">viel
-</p>
-
-<h2>Frage 2</h2>
-<p>
-<%== $q2 %>
-</p>
-<p>
- <input type="radio" name="Teilnehmer" value="1">schlecht
- <input type="radio" name="Teilnehmer" value="2">naja
- <input type="radio" name="Teilnehmer" value="3">gut
- <input type="radio" name="Teilnehmer" value="4">super
-</p>
-
-<h2>Frage 3</h2>
-<p>
-<%== $q3 %>
-</p>
-<p>
- <input type="radio" name="Unterlagen" value="1">schlecht
- <input type="radio" name="Unterlagen" value="2">naja
- <input type="radio" name="Unterlagen" value="3">gut
- <input type="radio" name="Unterlagen" value="4">super
-</p>
-
-<h2>Frage 4</h2>
-<p>
-<%== $q4 %>
-</p>
-<p>
- <input type="radio" name="Klasse" value="1">schlecht
- <input type="radio" name="Klasse" value="2">naja
- <input type="radio" name="Klasse" value="3">gut
- <input type="radio" name="Klasse" value="4">super
-</p>
-
-<h2>Frage 5</h2>
-<p>
-<%== $q5 %>
-</p>
-<p>
- <input type="radio" name="Lehrperson" value="1">schlecht
- <input type="radio" name="Lehrperson" value="2">naja
- <input type="radio" name="Lehrperson" value="3">gut
- <input type="radio" name="Lehrperson" value="4">super
-</p>
- <br />
- <input type="submit" value="Submit">
+% layout 'main';
+ <section id="main">
+  <article>
+   <form action="/vote">
+   
+   <h2>Frage 1</h2>
+   <p>
+   <%== $q1 %>
+   </p>
+   <p>
+    <input type="radio" name="interest" value="1">wenig
+    <input type="radio" name="interest" value="2">mittel
+    <input type="radio" name="interest" value="3">viel
+   </p>
+   
+   <h2>Frage 2</h2>
+   <p>
+   <%== $q2 %>
+   </p>
+   <p>
+    <input type="radio" name="Teilnehmer" value="1">schlecht
+    <input type="radio" name="Teilnehmer" value="2">naja
+    <input type="radio" name="Teilnehmer" value="3">gut
+    <input type="radio" name="Teilnehmer" value="4">super
+   </p>
+   
+   <h2>Frage 3</h2>
+   <p>
+   <%== $q3 %>
+   </p>
+   <p>
+    <input type="radio" name="Unterlagen" value="1">schlecht
+    <input type="radio" name="Unterlagen" value="2">naja
+    <input type="radio" name="Unterlagen" value="3">gut
+    <input type="radio" name="Unterlagen" value="4">super
+   </p>
+   
+   <h2>Frage 4</h2>
+   <p>
+   <%== $q4 %>
+   </p>
+   <p>
+    <input type="radio" name="Klasse" value="1">schlecht
+    <input type="radio" name="Klasse" value="2">naja
+    <input type="radio" name="Klasse" value="3">gut
+    <input type="radio" name="Klasse" value="4">super
+   </p>
+   
+   <h2>Frage 5</h2>
+   <p>
+   <%== $q5 %>
+   </p>
+   <p>
+    <input type="radio" name="Lehrperson" value="1">schlecht
+    <input type="radio" name="Lehrperson" value="2">naja
+    <input type="radio" name="Lehrperson" value="3">gut
+    <input type="radio" name="Lehrperson" value="4">super
+   </p>
+   <br />
+   <input type="submit" value="Submit">
+  </article>
+ </section>
 </form> 
-</body>
-</html>
