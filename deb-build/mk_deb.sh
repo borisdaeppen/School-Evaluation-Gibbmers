@@ -21,6 +21,16 @@ if [ ! -e debian/usr/share/perl5/School/Evaluation/Gibbmers ]; then
 fi
 cp ../lib/School/Evaluation/Gibbmers/Chart.pm debian/usr/share/perl5/School/Evaluation/Gibbmers/
 
+if [ ! -e debian/usr/share/applications ]; then
+    mkdir -p debian/usr/share/applications
+fi
+cp ../gibbmers.desktop debian/usr/share/applications/gibbmers.desktop
+
+if [ ! -e debian/usr/share/icons ]; then
+    mkdir -p debian/usr/share/icons
+fi
+cp ../gibbmers48x48.png debian/usr/share/icons/gibbmers48x48.png
+
 # pack manpage
 if [ ! -e debian/usr/share/man/man1 ]; then
     mkdir -p debian/usr/share/man/man1
