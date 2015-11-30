@@ -264,8 +264,15 @@ footer {
   position: fixed;
   z-index: 8;
 }
+a:link { color: #000000; text-decoration: none}
+a:visited { color: #000000; text-decoration: none}
+a:hover { color: #3366CC; text-decoration: underline}
+a:active { color: #000000; text-decoration: none}
 .imagedesc {
   font-size: small;
+}
+#author {
+  float: right;
 }
 </style>
 </head>
@@ -274,7 +281,7 @@ footer {
   <h1>Gibbmers Unterrichtsauswertung</h1>
  </header>
  <%= content %>
- <footer>Gibbmers 2015</footer>
+ <footer><a href="https://github.com/borisdaeppen/School-Evaluation-Gibbmers">This is Opensource</a><span id="author">© Boris Däppen</span></footer>
 </body>
 </html>
 
