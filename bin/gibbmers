@@ -247,14 +247,66 @@ __DATA__
 
 @@ poll.html.ep
 <!DOCTYPE html>
-<html lang="de"><head><meta charset="utf-8"><title>Gibbmers</title></head>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>Gibbmers</title>
+<style type="text/css">
+header {
+  background-color: #e6e6e6;
+  opacity: 0.8;
+  width: 100%;
+  height: 18%;
+  top: 0;
+  position: fixed;
+  z-index: 9;
+}
+section {
+  position: absolute;
+  margin-top: 10%;
+  z-index: 1;
+}
+article {
+  margin: 4% auto;
+  width: 50%;
+}
+footer {
+  background-color: #e6e6e6;
+  opacity: 0.8;
+  width: 100%;
+  bottom: 0;
+  position: fixed;
+  z-index: 8;
+}
+.imagedesc {
+  font-size: small;
+}
+</style>
+</head>
 <body>
- <h1>Auswertung</h1>
- <img src="Teilnehmer.png" alt="Selbsteinschätzung"> 
- <img src="Klasse.png" alt="Klassenklima"><br />
- <img src="Unterlagen.png" alt="Modulunterlagen"> 
- <img src="Lehrperson.png" alt="Lehrperson"> 
- <p>Anzahl Stimmen: <%= $poll_count %></p>
+ <header>
+  <h1>Auswertung</h1>
+  Anzahl Stimmen: <%= $poll_count %>
+ </header>
+ <section id="main">
+  <article>
+   <div class="imagedesc">blah blah blah blah blahblahblahblahblah  aa aa abcd abcd abcd abcd ggggg gggg ggg gggg gggg gggg gggg gggg ggg</div>
+   <img src="Teilnehmer.png" alt="Selbsteinschätzung">
+  </article>
+  <article>
+   <div class="imagedesc">blah blah blah blah blahblahblahblahblah  aa aa abcd abcd abcd abcd ggggg gggg ggg gggg gggg gggg gggg gggg ggg</div>
+   <img src="Klasse.png" alt="Klassenklima">
+  </article>
+  <article>
+   <div class="imagedesc">blah blah blah blah blahblahblahblahblah  aa aa abcd abcd abcd abcd ggggg gggg ggg gggg gggg gggg gggg gggg ggg</div>
+   <img src="Unterlagen.png" alt="Modulunterlagen">
+  </article>
+  <article>
+   <div class="imagedesc">blah blah blah blah blahblahblahblahblah  aa aa abcd abcd abcd abcd ggggg gggg ggg gggg gggg gggg gggg gggg ggg</div>
+   <img src="Lehrperson.png" alt="Lehrperson">
+  </article>
+ </section>
+ <footer>Gibbmers 2015</footer>
 </body>
 </html>
 
