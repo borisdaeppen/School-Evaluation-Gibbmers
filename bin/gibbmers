@@ -3,8 +3,8 @@ use Mojolicious::Lite;
 use Mojo::Cache;
 use Mojo::Server::Daemon;
 
-#use Config::Any;
 use YAML::Tiny;
+use IO::Interface::Simple;
 
 # include modules located in local lib
 #use lib "lib";
@@ -76,6 +76,13 @@ $cache->set(poll =>
                                     4    => [ 0, 0, 0 ],
                  },
               });
+
+my @interfaces = IO::Interface::Simple->interfaces;
+for my $if (@interfaces) {
+    if ( $if !~ /^vmnet/ ) {
+        app->log->info("possible interface $if:\t" . $if->address);
+    }
+}
 
 # gets called for every request
 under sub {
