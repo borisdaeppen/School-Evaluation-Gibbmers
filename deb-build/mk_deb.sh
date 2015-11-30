@@ -77,6 +77,8 @@ chmod 644 debian/DEBIAN/md5sums
 chmod 644 debian/DEBIAN/control
 chmod 644 debian/DEBIAN/conffiles
 chmod 644 debian/usr/share/perl5/School/Evaluation/Gibbmers/Chart.pm
+chmod 644 debian/usr/share/icons/gibbmers48x48.png
+chmod 644 debian/usr/share/applications/gibbmers.desktop
 
 # create deb package
 echo -e "\tbuild package"
